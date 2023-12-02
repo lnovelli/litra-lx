@@ -395,4 +395,5 @@ export const setBrightnessRGB = (device: Device, value: number) => {
 export const setZoneColorRGB = (device: Device, zoneId: number, red: number, green: number, blue: number) => {
   device.hid.write(padRight([0x11, 0xff, 0x0C, 0x1B, zoneId, red, green, blue, 0xFF, 0, 0, 0, 0xFF, 0, 0, 0, 0xFF, 0, 0, 0], 20, 0x00));
   device.hid.write(padRight([0x11, 0xff, 0x0C, 0x7B, 0, 0, 1, 0, 0], 20, 0x00));
+  device.hid.readSync();
 };
