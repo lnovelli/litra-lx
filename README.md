@@ -214,6 +214,48 @@ if (device) {
 }
 ```
 
+#### Use the RGB side
+
+Litra beam LX also has a RGB side. You can use the `setRGBColor` function to set the color of the RGB side. By setting all to zero you can turn off the RGB side completely.
+
+```js
+import {
+  findDevice,
+  setRGBColor
+} from 'litra';
+
+const device = findDevice();
+
+if (device) {
+  setRGBColor(device, 255, 0, 0); // red
+}
+```
+
+Per-zone configuration.
+Litra Beam LX has 7 different programmable zones. You can use the `setZoneColorRGB` function to set the RGB color of a specific zone. By setting all to zero you can turn off the RGB side completely. Please run `setRGBColor(device, 0, 0, 0)` before OR set all the 7 zones everytime, otherwise the device might behave strangely.
+
+The below example will set the central zone to blue and all the rest will be off.
+
+```js
+import {
+  findDevice,
+  setRGBColor,
+  setZoneColorRGB
+} from 'litra';
+
+const device = findDevice();
+
+if (device) {
+  setZoneColorRGB(device, 1, 0, 0, 0);
+  setZoneColorRGB(device, 2, 0, 0, 0);
+  setZoneColorRGB(device, 3, 0, 0, 0);
+  setZoneColorRGB(device, 4, 0, 0, 255);
+  setZoneColorRGB(device, 5, 0, 0, 0);
+  setZoneColorRGB(device, 6, 0, 0, 0);
+  setZoneColorRGB(device, 7, 0, 0, 0);
+}
+```
+
 ## Using with Raycast
 
 Litra integrates with [Raycast](https://www.raycast.com/) so you can manage your Litra device from the Raycast launcher.
