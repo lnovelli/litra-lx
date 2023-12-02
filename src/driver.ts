@@ -359,3 +359,40 @@ export const setRGBColor = (device: Device, red: number, green: number, blue: nu
   device.hid.readSync();
   device.hid.write(padRight([0x11, 0xff, 0x0b, 0x1f, 0, 0, red, green, blue, 0,0,0,0,0,0,0,1], 20, 0x00));
 };
+
+
+/**
+ * Turn off the RGB side of your Logitech Litra Beam LX
+ *
+ * @param {Device} device The device to set the RGB of. Setting all to zero will turn it off.
+ */
+export const turnOnRGB = (device: Device) => {
+  device.hid.write(padRight([0x11, 0xff, 0x0a, 0x4b, 0], 20, 0x00));
+};
+
+/**
+ * Turn off the RGB side of your Logitech Litra Beam LX
+ *
+ */
+export const turnOffRGB = (device: Device) => {
+  device.hid.write(padRight([0x11, 0xff, 0x0a, 0x4b, 0], 20, 0x00));
+};
+
+/**
+ * Set the RGB brightness of your Logitech Litra Beam LX (wall-side). Value is 0-100
+ *
+ * @param {Device} device The device to set the RGB of. Setting all to zero will turn it off.
+ */
+export const setBrightnessRGB = (device: Device, value: number) => {
+  device.hid.write(padRight([0x11, 0xff, 0x0a, 0x2b, 0, value], 20, 0x00));
+};
+
+/**
+ * Set the RGB brightness of your Logitech Litra Beam LX (wall-side). Value is 0-100
+ *
+ * @param {Device} device The device to set the RGB of. Setting all to zero will turn it off.
+ */
+export const setZoneColorRGB = (device: Device, zoneId: number, red: number, green: number, blue: number) => {
+  device.hid.write(padRight([0x11, 0xff, 0x0C, 0x1B, zoneId, red, green, blue, 0xFF, 0, 0, 0, 0xFF, 0, 0, 0, 0xFF, 0, 0, 0], 20, 0x00));
+  device.hid.write(padRight([0x11, 0xff, 0x0C, 0x7B, 0, 0, 1, 0, 0], 20, 0x00));
+};
