@@ -358,6 +358,7 @@ export const setRGBColor = (device: Device, red: number, green: number, blue: nu
   device.hid.write(padRight([0x11, 0xff, 0x0b, 0x1f, 0, 0, red, green, blue, 0,0,0,0,0,0,0,1], 20, 0x00));
   device.hid.readSync();
   device.hid.write(padRight([0x11, 0xff, 0x0b, 0x1f, 0, 0, red, green, blue, 0,0,0,0,0,0,0,1], 20, 0x00));
+  device.hid.readSync();
 };
 
 
@@ -368,6 +369,7 @@ export const setRGBColor = (device: Device, red: number, green: number, blue: nu
  */
 export const turnOnRGB = (device: Device) => {
   device.hid.write(padRight([0x11, 0xff, 0x0a, 0x4b, 0], 20, 0x00));
+  device.hid.readSync();
 };
 
 /**
@@ -376,6 +378,7 @@ export const turnOnRGB = (device: Device) => {
  */
 export const turnOffRGB = (device: Device) => {
   device.hid.write(padRight([0x11, 0xff, 0x0a, 0x4b, 0], 20, 0x00));
+  device.hid.readSync();
 };
 
 /**
@@ -385,6 +388,7 @@ export const turnOffRGB = (device: Device) => {
  */
 export const setBrightnessRGB = (device: Device, value: number) => {
   device.hid.write(padRight([0x11, 0xff, 0x0a, 0x2b, 0, value], 20, 0x00));
+  device.hid.readSync();
 };
 
 /**
@@ -394,6 +398,7 @@ export const setBrightnessRGB = (device: Device, value: number) => {
  */
 export const setZoneColorRGB = (device: Device, zoneId: number, red: number, green: number, blue: number) => {
   device.hid.write(padRight([0x11, 0xff, 0x0C, 0x1B, zoneId, red, green, blue, 0xFF, 0, 0, 0, 0xFF, 0, 0, 0, 0xFF, 0, 0, 0], 20, 0x00));
+  device.hid.readSync();
   device.hid.write(padRight([0x11, 0xff, 0x0C, 0x7B, 0, 0, 1, 0, 0], 20, 0x00));
   device.hid.readSync();
 };
