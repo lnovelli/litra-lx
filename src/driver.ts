@@ -349,7 +349,10 @@ export const getNameForDevice = (device: Device): string => {
  * @param {number} blue The blue channel (0-255)
  */
 export const setRGBColor = (device: Device, red: number, green: number, blue: number) => {
-  device.hid.write(padRight([0x11, 0xff, 0x0B, 0x5F, 1, 1], 20, 0x00));
+    device.hid.write(padRight([0x11, 0xff, 0x0B, 0x5F, 1, 1], 20, 0x00));
+    device.hid.write(padRight([0x11, 0xff, 0x0a, 0x4b, 1], 20, 0x00));
+    device.hid.write(padRight([0x11, 0xff, 0x0a, 0x2e, 0, 100], 20, 0x00));
+    device.hid.write(padRight([0x11, 0xff, 0x0b, 0x1f, 0, 0, red, green, blue, 0,0,0,0,0,0,0,1], 20, 0x00));
     device.hid.write(padRight([0x11, 0xff, 0x0a, 0x4b, 1], 20, 0x00));
     device.hid.write(padRight([0x11, 0xff, 0x0a, 0x2e, 0, 100], 20, 0x00));
     device.hid.write(padRight([0x11, 0xff, 0x0b, 0x1f, 0, 0, red, green, blue, 0,0,0,0,0,0,0,1], 20, 0x00));
