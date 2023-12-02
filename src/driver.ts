@@ -17,6 +17,7 @@ const PRODUCT_IDS = [
   0xc900, // Litra Glow
   0xc901, // Litra Beam
   0xb901, // Litra Beam
+  0xc903, // Litra Beam LX
 ];
 const USAGE_PAGE = 0xff43;
 
@@ -106,7 +107,7 @@ export const findDevices = (): Device[] => {
  * @param {Device} device The device to turn on
  */
 export const turnOn = (device: Device): void => {
-  device.hid.write(padRight([0x11, 0xff, 0x04, 0x1c, 0x01], 20, 0x00));
+  device.hid.write(padRight([0x11, 0xff, 0x06, 0x1c, 0x01], 20, 0x00));
 };
 
 /**
@@ -115,7 +116,7 @@ export const turnOn = (device: Device): void => {
  * @param {Device} device The device to turn off
  */
 export const turnOff = (device: Device): void => {
-  device.hid.write(padRight([0x11, 0xff, 0x04, 0x1c, 0x00], 20, 0x00));
+  device.hid.write(padRight([0x11, 0xff, 0x06, 0x1c, 0x00], 20, 0x00));
 };
 
 /**
@@ -138,7 +139,7 @@ export const toggle = (device: Device): void => {
  * @returns {boolean} Current power state where true = on and false = off
  */
 export const isOn = (device: Device): boolean => {
-  device.hid.write(padRight([0x11, 0xff, 0x04, 0x01], 20, 0x00));
+  device.hid.write(padRight([0x11, 0xff, 0x06, 0x01], 20, 0x00));
 
   const data = device.hid.readSync();
 
@@ -172,7 +173,7 @@ export const setTemperatureInKelvin = (
   }
 
   device.hid.write(
-    padRight([0x11, 0xff, 0x04, 0x9c, ...integerToBytes(temperatureInKelvin)], 20, 0x00),
+    padRight([0x11, 0xff, 0x06, 0x9c, ...integerToBytes(temperatureInKelvin)], 20, 0x00),
   );
 };
 
@@ -183,7 +184,7 @@ export const setTemperatureInKelvin = (
  * @returns {number} The current temperature in Kelvin
  */
 export const getTemperatureInKelvin = (device: Device): number => {
-  device.hid.write(padRight([0x11, 0xff, 0x04, 0x81], 20, 0x00));
+  device.hid.write(padRight([0x11, 0xff, 0x06, 0x81], 20, 0x00));
 
   const data = device.hid.readSync();
 
@@ -214,7 +215,7 @@ export const setBrightnessInLumen = (device: Device, brightnessInLumen: number):
   }
 
   device.hid.write(
-    padRight([0x11, 0xff, 0x04, 0x4c, ...integerToBytes(brightnessInLumen)], 20, 0x00),
+    padRight([0x11, 0xff, 0x06, 0x4c, ...integerToBytes(brightnessInLumen)], 20, 0x00),
   );
 };
 
@@ -225,7 +226,7 @@ export const setBrightnessInLumen = (device: Device, brightnessInLumen: number):
  * @returns {number} The current brightness in Lumen
  */
 export const getBrightnessInLumen = (device: Device): number => {
-  device.hid.write(padRight([0x11, 0xff, 0x04, 0x31], 20, 0x00));
+  device.hid.write(padRight([0x11, 0xff, 0x06, 0x31], 20, 0x00));
 
   const data = device.hid.readSync();
 
@@ -270,6 +271,7 @@ const getDeviceTypeByProductId = (productId: number): DeviceType => {
       return DeviceType.LitraGlow;
     case PRODUCT_IDS[1]:
     case PRODUCT_IDS[2]:
+    case PRODUCT_IDS[3]:
       return DeviceType.LitraBeam;
     default:
       throw 'Unknown device type';
@@ -335,4 +337,19 @@ export const getAllowedTemperaturesInKelvinForDevice = (device: Device): number[
  */
 export const getNameForDevice = (device: Device): string => {
   return NAME_BY_DEVICE_TYPE[device.type];
+};
+
+
+/**
+ * Set the RGB value of your Logitech Litra Beam LX (wall-side)
+ *
+ * @param {Device} device The device to set the RGB of. Setting all to zero will turn it off.
+ * @param {number} red The red channel (0-255)
+ * @param {number} green The green channel (0-255)
+ * @param {number} blue The blue channel (0-255)
+ */
+export const setRGBColor = (device, red, green, blue) => {
+    device.hid.write(padRight([0x11, 0xff, 0x0a, 0x4b, 1], 20, 0x00));
+    device.hid.write(padRight([0x11, 0xff, 0x0a, 0x2e, 255, 255], 20, 0x00));
+    device.hid.write(padRight([0x11, 0xff, 0x0b, 0x1f, 0, 0, red, green, blue, 0,0,0,0,0,0,0,1], 20, 0x00));
 };
